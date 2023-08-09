@@ -21,7 +21,8 @@ namespace MyTestC3DPlugin
             Document adoc = AcadApp.DocumentManager.MdiActiveDocument;
             Editor ed = adoc.Editor;
 
-            ed.WriteMessage("Hello world!");
+            ed.WriteMessage("Hello, World!!!");
+            ed.WriteMessage("Command complete.");
         }
     }
 }
