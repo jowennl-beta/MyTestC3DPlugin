@@ -15,14 +15,18 @@ namespace MyTestC3DPlugin
 {
     public class MyCommands
     {
-        [CommandMethod("JL-TestCommand")]
-        public static void TestCommand()
+        [CommandMethod("JL-CreateLine")]
+        public static void CreateLine()
         {
             Document adoc = AcadApp.DocumentManager.MdiActiveDocument;
             Editor ed = adoc.Editor;
 
-            ed.WriteMessage("Hello, World!!!");
-            ed.WriteMessage("Command complete.");
+            // Prompt user for first point
+            // Prompt user for second point
+            // Check to make sure points are not identical
+            // Create the line
+            // Output some helpful message at the end
+
         }
     }
 }
