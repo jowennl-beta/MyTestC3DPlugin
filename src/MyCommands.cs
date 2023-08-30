@@ -49,14 +49,30 @@ namespace MyTestC3DPlugin
 
             Point3d endPnt = pointRes.Value;
 
-            // Check to make sure points are not identical
-            if (startPnt == endPnt)
+            try
             {
-                ed.WriteMessage("Error: Cannot create line with identical start and end points.\n");
-                return;
+                Line line = LineByTwoPoints(adoc, startPnt, endPnt);
+                ed.WriteMessage($"New line created. Length = {line.Length}\n");
+            }
+            catch (System.Exception ex)
+            {
+                ed.WriteMessage($"Error: {ex.Message}");
             }
 
             Stopwatch sw = Stopwatch.StartNew();
+            sw.Stop();
+
+            // Output some helpful message at the end
+            ed.WriteMessage($"Command complete. Elapsed times = {sw.ElapsedMilliseconds}ms\n");
+        }
+
+        public static Line LineByTwoPoints(Document adoc, Point3d startPnt, Point3d endPnt)
+        {
+            // Check to make sure points are not identical
+            if (startPnt == endPnt)
+            {
+                throw new ArgumentException("Start point and end point cannot be the same.");
+            }
 
             // Create the line
             using (Transaction tr = adoc.TransactionManager.StartTransaction())
@@ -71,20 +87,16 @@ namespace MyTestC3DPlugin
                 if (line != null)
                 {
                     ms.AppendEntity(line);
-                    tr.AddNewlyCreatedDBObject(line, true);
-                    ed.WriteMessage($"New line created. Length = {line.Length}\n");
+                    tr.AddNewlyCreatedDBObject(line, true);  
                 }
-                
-                tr.Commit();             
+
+                tr.Commit();
+                return line;
             }
-
-            sw.Stop();
-
-            // Output some helpful message at the end
-            ed.WriteMessage($"Command complete. Elapsed times = {sw.ElapsedMilliseconds}ms\n");
         }
 
-        // Next step: refactor the code to extract the line creation into a separate method and call within CommandMethod
         // Create simple Alignment using 2 points
     }
+
+    
 }
